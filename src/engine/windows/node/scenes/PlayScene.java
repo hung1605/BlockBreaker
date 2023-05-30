@@ -18,10 +18,10 @@ public class PlayScene extends Scene{
         super(gameWindows);
         background = new Background(new BufferedImage(gameWindows.getWidth(),gameWindows.getHeight(),BufferedImage.TYPE_BYTE_GRAY));
         this.slider = new Slider(new Position(500, 600), 10);
-        this.ball = new Ball(new Position(500, 500), 5);
+        this.ball = new Ball(new Position(200, 500), 5);
         this.listGameObject.add(this.slider);
         this.listGameObject.add(this.ball);
-        this.listGameObject.add(new Wall(new Position(0,0), 5,gameWindows.getHeight()));// left wall
+        this.listGameObject.add(new Wall(new Position(-5,0), 10,gameWindows.getHeight()));// left wall
         this.listGameObject.add(new Wall(new Position(0,0), gameWindows.getWidth(),5));// up wall
         this.listGameObject.add(new Wall(new Position(gameWindows.getWidth(),0), 5,gameWindows.getHeight()));// right wall
         for(int i = 1; i <= 7; i++){

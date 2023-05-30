@@ -1,7 +1,6 @@
 package engine.windows.node;
 
 import engine.windows.common.Position;
-import engine.windows.node.slider.Slider;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -20,7 +19,7 @@ public class Ball extends GameObject {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.angle = 170;
+        this.angle = 180;
         this.ismove = false;
         this.speed = speed;
     }
@@ -37,6 +36,7 @@ public class Ball extends GameObject {
          * x,y,w,h gameObject
          */
         Random r = new Random();
+        //Update something
 
         if (position.x + image.getWidth() >= gameObject.getPosition().x
                 && position.x + image.getWidth() <= gameObject.getPosition().x + 3

@@ -14,9 +14,14 @@ public class Slider extends GameObject {
     private int goRight;
     private KeyListener keyListener;
     private int speed;
-    public Slider(Position position, int speed){
+    private int moveRange;
+    private boolean goLeftAble;
+    private boolean goRightAble;
+    public Slider(Position position, int speed, int moveRange){
         super(position);
         this.speed = speed;
+        this.moveRange = moveRange;
+        this.goLeftAble = this.goRightAble = true;
         try {
             this.image = ImageIO.read(new File("Resources/48-Breakout-Tiles.png"));
         } catch (IOException e) {
@@ -34,11 +39,13 @@ public class Slider extends GameObject {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_A:
                     case KeyEvent.VK_LEFT:
-                        goLeft = 1;
+                        if(goLeftAble)
+                            goLeft = 1;
                         break;
                     case KeyEvent.VK_D:
                     case KeyEvent.VK_RIGHT:
-                        goRight = 1;
+                        if(goRightAble)
+                            goRight = 1;
                         break;
                 }
             }
@@ -64,6 +71,11 @@ public class Slider extends GameObject {
     }
     @Override
     public void update() {
+        if(0 < this.position.x && this.position.x + this.image.getWidth() < moveRange) goLeftAble = goRightAble = true;
+        if(!goRightAble) goRight = 0;
+        if(!goLeftAble) goLeft = 0;
+        if(this.position.x + this.image.getWidth() >= moveRange) goRightAble = false;
+        if(this.position.x <= 0) goLeftAble = false;
         this.position.x += (goRight - goLeft) * speed;
     }
 

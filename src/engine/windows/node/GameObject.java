@@ -46,6 +46,14 @@ public abstract class GameObject {
         return image.getHeight();
     }
 
+    public boolean isCollidable() {
+        return collidable;
+    }
+
+    public void setCollidable(boolean collidable) {
+        this.collidable = collidable;
+    }
+
     public boolean isCollide(GameObject gameObject) {
         if(!this.collidable || !gameObject.collidable) return false;
 

@@ -51,7 +51,7 @@ public class Scene {
             for (int j = i+1; j < listGameObject.size(); j++) {
                 GameObject gameObjectA = listGameObject.get(i);
                 GameObject gameObjectB = listGameObject.get(j);
-                if(gameObjectB.isCollide(gameObjectA)) {
+                if(gameObjectB.isCollide(gameObjectA) && gameObjectA.isCollidable() && gameObjectB.isCollidable()) {
                     gameObjectB.collideWith(gameObjectA);
                     gameObjectA.collideWith(gameObjectB);
                 }

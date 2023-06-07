@@ -27,7 +27,7 @@ public class GameWindows extends Frame implements Runnable {
     public GameWindows() {
         super();
         sceneStack = new Stack<>();
-        this.setSize(1024, 768);
+        this.setSize(960, 540);
         this.setTitle("Block braker");
         this.setFocusable(true);
         this.setVisible(true);

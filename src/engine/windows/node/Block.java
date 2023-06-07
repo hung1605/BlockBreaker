@@ -7,11 +7,26 @@ import java.io.File;
 import java.io.IOException;
 
 public class Block extends GameObject{
-    private int health;
-    public Block(Position position){
+    private int type;
+
+    public static Block prototype() {
+        return new Block(new Position(0,0),1);
+    }
+    public Block(Position position, int type){
         super(position);
+        this.type = type;
         try {
-            this.image = ImageIO.read(new File("Resources/11-Breakout-Tiles.png"));
+            switch (type){
+                case 1:
+                    this.image = ImageIO.read(new File("Resources/black1_t.png"));
+                    break;
+                case 2:
+                    this.image = ImageIO.read(new File("Resources/black2_t.png"));
+                    break;
+                case 3:
+                    this.image = ImageIO.read(new File("Resources/black3_t.png"));
+                    break;
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

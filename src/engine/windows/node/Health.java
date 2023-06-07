@@ -2,24 +2,26 @@ package engine.windows.node;
 
 import engine.windows.common.Position;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Health extends GameObject{
-    protected int lifePoint;
-    public Health(Position position) {
-        super(position);
-        this.setCollidable(false);
-        try {
-            this.image = ImageIO.read(new File("Resources/60-Breakout-Tiles.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+public class Health{
+    private List<GameObject> listLifePoint;
+    private int lifePoint;
+    public Health(int lifePoint) {
+        this.lifePoint = lifePoint;
+        this.listLifePoint = new ArrayList<>();
+        Heart heartPrototype = Heart.prototype();
+        for (int i = 0; i < lifePoint; i++){
+            this.listLifePoint.add(new Heart(new Position(i * heartPrototype.getWidth() + 50, 50)));
         }
     }
+    public void decreaseLifePoint(){
+        listLifePoint.get(listLifePoint.size() - 1).destroyGameObject();
+        listLifePoint.remove(listLifePoint.size() - 1);
+    }
 
-    @Override
-    public void collideWith(GameObject target) {
-
+    public List<GameObject> getListLifePoint() {
+        return listLifePoint;
     }
 }

@@ -9,11 +9,13 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Scene {
+abstract public class Scene {
     protected List<GameObject> listGameObject;
     protected List<KeyListener> keyListenerList;
     protected List<MouseListener> mouseListenerList;
     protected GameWindows gameWindows;
+
+    private boolean initialized = false;
 
     public Scene(GameWindows gameWindows) {
         this.gameWindows = gameWindows;
@@ -22,20 +24,29 @@ public class Scene {
         this.mouseListenerList = new ArrayList<>();
     }
 
+    private void initSceneInternal() {
+        if (!initialized) {
+            initialized = true;
+            initScene();
+        }
+    }
+
+    abstract protected void initScene();
+
+
     public void draw(Graphics g) {
         for (GameObject gameObject : listGameObject) {
             gameObject.draw(g);
         }
     }
     public void update() {
+        initSceneInternal();
         List<GameObject> toBeRemoved = new ArrayList<>();
         for (GameObject gameObject : listGameObject) {
             gameObject.update();
             if(gameObject.isDestroy()) toBeRemoved.add(gameObject);
         }
-
         listGameObject.removeAll(toBeRemoved);
-
     }
 
     public List<KeyListener> getKeyListenerList() {

@@ -7,4 +7,9 @@ public class EscScene extends Scene{
     public EscScene(GameWindows gameWindows) {
         super(gameWindows);
     }
+
+    @Override
+    protected void initScene() {
+
+    }
 }

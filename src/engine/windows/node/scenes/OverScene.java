@@ -35,6 +35,12 @@ public class OverScene extends Scene{
         this.getMouseListenerList().add(restartButton.getMouseListener());
 
     }
+
+    @Override
+    protected void initScene() {
+
+    }
+
     private Background background;
     public void draw(Graphics g) {
         background.draw(g);

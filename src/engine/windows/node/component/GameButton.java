@@ -6,7 +6,6 @@ import engine.windows.node.GameObject;
 import javax.imageio.ImageIO;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 // dùng interface để mỗi object tạo ra có thể định nghĩa lại 1 hàm con trong interface
@@ -14,7 +13,9 @@ public class GameButton extends GameObject {
     ISimpleClickListener GBCListener;
     MouseListener mouseListener;
     private boolean isPressed;
-
+    public static GameButton prototype(String path){
+        return new GameButton(new Position(0,0),null, path);
+    }
     public GameButton(Position position, ISimpleClickListener GBCListener, String path) {
         super(position);
         this.GBCListener = GBCListener;

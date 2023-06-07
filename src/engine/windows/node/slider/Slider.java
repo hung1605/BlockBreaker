@@ -1,6 +1,7 @@
 package engine.windows.node.slider;
 
 import engine.windows.common.Position;
+import engine.windows.node.Ball;
 import engine.windows.node.GameObject;
 
 import javax.imageio.ImageIO;
@@ -17,13 +18,14 @@ public class Slider extends GameObject {
     private int moveRange;
     private boolean goLeftAble;
     private boolean goRightAble;
+    int currentFrame;
     public Slider(Position position, int speed, int moveRange){
         super(position);
         this.speed = speed;
         this.moveRange = moveRange;
         this.goLeftAble = this.goRightAble = true;
         try {
-            this.image = ImageIO.read(new File("Resources/48-Breakout-Tiles.png"));
+            this.image = ImageIO.read(new File("Resources/scroll-bar.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -67,8 +69,12 @@ public class Slider extends GameObject {
     }
     @Override
     public void collideWith(GameObject target) {
+        if(target instanceof Ball) {
+            this.collidable = false;
+        }
 
     }
+
     @Override
     public void update() {
         if(0 < this.position.x && this.position.x + this.image.getWidth() < moveRange) goLeftAble = goRightAble = true;
@@ -77,9 +83,24 @@ public class Slider extends GameObject {
         if(this.position.x + this.image.getWidth() >= moveRange) goRightAble = false;
         if(this.position.x <= 0) goLeftAble = false;
         this.position.x += (goRight - goLeft) * speed;
+        if (!this.collidable) {
+            currentFrame++;
+            if (currentFrame == 10) {
+                currentFrame = 0;
+                this.collidable = true;
+            }
+        }
     }
 
     public KeyListener getKeyListener() {
         return keyListener;
+    }
+
+    public int getGoLeft() {
+        return goLeft;
+    }
+
+    public int getGoRight() {
+        return goRight;
     }
 }

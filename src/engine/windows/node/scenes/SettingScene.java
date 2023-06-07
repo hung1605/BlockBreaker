@@ -7,4 +7,9 @@ public class SettingScene extends Scene{
     public SettingScene(GameWindows gameWindows) {
         super(gameWindows);
     }
+
+    @Override
+    protected void initScene() {
+
+    }
 }

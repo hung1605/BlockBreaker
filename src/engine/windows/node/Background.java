@@ -11,4 +11,7 @@ public class Background {
     public void draw(Graphics g){
         g.drawImage(this.image,0,0,null);
     }
+    public BufferedImage getImage() {
+        return this.image;
+    }
 }

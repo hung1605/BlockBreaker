@@ -7,9 +7,7 @@ import java.util.List;
 
 public class Health{
     private List<GameObject> listLifePoint;
-    private int lifePoint;
     public Health(int lifePoint) {
-        this.lifePoint = lifePoint;
         this.listLifePoint = new ArrayList<>();
         Heart heartPrototype = Heart.prototype();
         for (int i = 0; i < lifePoint; i++){

@@ -4,7 +4,6 @@ import engine.windows.GameWindows;
 import engine.windows.common.Position;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,24 +16,25 @@ public class Wall extends GameObject{
     public Wall(GameWindows gameWindows, int side){
         super(new Position(-100, -100));
         switch (side){
-            case UP -> {
-                this.position.x = this.position.y = 0;
+            case UP:
+                this.position.x = 0;
+                this.position.y = 0;
                 this.image = new BufferedImage(gameWindows.getWidth(), gameWindows.getHeight(), BufferedImage.TYPE_INT_RGB);
-            }
-            case DOWN -> {
+                break;
+            case DOWN:
                 this.position.x = 0;
                 this.position.y = gameWindows.getHeight();
                 this.image = new BufferedImage(gameWindows.getWidth(), gameWindows.getHeight(), BufferedImage.TYPE_INT_RGB);
-            }
-            case LEFT -> {
+                break;
+            case LEFT:
                 try {
                     this.image = ImageIO.read(new File("Resources/wall-left.png"));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
                 this.position.x = this.position.y = 0;
-            }
-            case RIGHT -> {
+                break;
+            case RIGHT:
                 try {
                     this.image = ImageIO.read(new File("Resources/wall-right.png"));
                 } catch (IOException e) {
@@ -42,8 +42,9 @@ public class Wall extends GameObject{
                 }
                 this.position.y = 0;
                 this.position.x = gameWindows.getWidth() - this.image.getWidth();
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + side);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + side);
         }
     }
     @Override

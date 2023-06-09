@@ -123,63 +123,6 @@ public class Ball extends GameObject {
             }
         }
     }
-//            if (position.x + image.getWidth() >= gameObject.getPosition().x &&
-//            position.x + image.getWidth() <= gameObject.getPosition().x + speed &&
-//            position.y + image.getHeight() >= gameObject.getPosition().y &&
-//            position.y + image.getHeight() <= gameObject.getPosition().y + speed){
-//            //LEFT UP CORNER
-//            System.out.println("LEFT UP CORNER");
-//            angle = angle - 180;
-//        }
-//        else if(position.x >= gameObject.getPosition().x + gameObject.getWidth() - speed &&
-//                position.x <= gameObject.getPosition().x + gameObject.getWidth() &&
-//                position.y + image.getHeight() >= gameObject.getPosition().y &&
-//                position.y + image.getHeight() <= gameObject.getPosition().y + speed){
-//            //RIGHT UP CORNER
-//            System.out.println("RIGHT UP CORNER");
-//            angle = angle - 180;
-//        }
-//        else if(position.x >= gameObject.getPosition().x + gameObject.getWidth() - speed &&
-//                position.x <= gameObject.getPosition().x + gameObject.getWidth() &&
-//                position.y >= gameObject.getPosition().y + gameObject.getHeight() - speed &&
-//                position.y <= gameObject.getPosition().y + gameObject.getHeight()){
-//            //RIGHT DOWN CORNER
-//            System.out.println("RIGHT DOWN CORNER");
-//            angle = angle + 180;
-//        }
-//        else if(position.x + image.getWidth() >= gameObject.getPosition().x &&
-//                position.x + image.getWidth() <= gameObject.getPosition().x + speed &&
-//                position.y >= gameObject.getPosition().y + gameObject.getHeight() - speed &&
-//                position.y <= gameObject.getPosition().y + gameObject.getHeight()) {
-//            //LEFT DOWN CORNER
-//            System.out.println("LEFT DOWN CORNER");
-//            angle = angle + 180;
-//        }
-//        else if(position.x + image.getWidth() >= gameObject.getPosition().x &&
-//            position.x + image.getWidth() <= gameObject.getPosition().x + speed) {
-//            //LEFT
-//            System.out.println("LEFT");
-//            angle = 180 - angle;
-//        }
-//        else if (position.y + image.getHeight() >= gameObject.getPosition().y &&
-//                 position.y + image.getHeight() <= gameObject.getPosition().y + speed) {
-//            //UP
-//            System.out.println("UP");
-//            angle = 360 - angle;
-//        }
-//        else if (position.x >= gameObject.getPosition().x + gameObject.getWidth() - speed &&
-//                 position.x <= gameObject.getPosition().x + gameObject.getWidth()) {
-//            //RIGHT
-//            System.out.println("RIGHT");
-//            angle = 180 - angle;
-//        }
-//
-//        else if(position.y >= gameObject.getPosition().y + gameObject.getHeight() - speed &&
-//                position.y <= gameObject.getPosition().y + gameObject.getHeight()){
-//            //DOWN
-//            System.out.println("DOWN");
-//            angle = 360 - angle;
-//        }
 
     private void afterCollision(GameObject gameObject) {
         this.collidable = false;

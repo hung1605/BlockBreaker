@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class OverScene extends Scene{
     private GameButton restartButton;
-    private GameButton homeButton;
+    // private GameButton homeButton;
     public OverScene(GameWindows gameWindows) {
         super(gameWindows);
         try {

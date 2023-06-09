@@ -8,10 +8,10 @@ import engine.windows.node.component.ISimpleClickListener;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-
-import static engine.windows.node.component.GameButton.prototype;
 
 public class MenuScene extends Scene {
     private Background background;
@@ -37,6 +37,32 @@ public class MenuScene extends Scene {
                 "Resources/start-button.png");
         this.listGameObject.add(startButton);
         this.getMouseListenerList().add(startButton.getMouseListener());
+        this.getKeyListenerList().add(new KeyListener() {
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                
+                throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case KeyEvent.VK_ESCAPE:
+                        EscScene escScene = new EscScene(gameWindows);
+                        gameWindows.pushScene(escScene);
+                        break;
+                }
+                throw new UnsupportedOperationException("Unimplemented method 'keyPressed'");
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'keyReleased'");
+            }
+            
+        });
     }
 
     @Override

@@ -17,7 +17,7 @@ public class OverScene extends Scene{
     public OverScene(GameWindows gameWindows) {
         super(gameWindows);
         try {
-            background = new Background(ImageIO.read(new File("Resources/gameover.jpg")));
+            background = new Background(ImageIO.read(new File("Resources/background.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -30,7 +30,7 @@ public class OverScene extends Scene{
                         gameWindows.pushScene(playScene);
                     }
                 },
-                "Resources/replayButton.png");
+                "Resources/restart-button.png");
         listGameObject.add(restartButton);
         this.getMouseListenerList().add(restartButton.getMouseListener());
 

@@ -1,6 +1,8 @@
 package engine.windows.node.scenes;
 
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -19,6 +21,26 @@ public class EscScene extends Scene{
             System.out.println("image unfound");
             e.printStackTrace();
         }
+        this.keyListenerList.add(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()){
+                    case KeyEvent.VK_ESCAPE:
+                        gameWindows.popScene();
+                        break;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
     }
 
     @Override
@@ -31,5 +53,6 @@ public class EscScene extends Scene{
         gameWindows.getWidth() / 2 - background.getImage().getWidth() / 2, 
         gameWindows.getHeight()/2 - background.getImage().getHeight() / 2,
         null);
+
     }
 }

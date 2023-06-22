@@ -14,17 +14,18 @@ public class Wall extends GameObject{
     public static final int UP = 3;
     public static final int DOWN = 4;
     public Wall(GameWindows gameWindows, int side){
-        super(new Position(-100, -100));
+        super(new Position(0, 0));
         switch (side){
             case UP:
+                this.image = new BufferedImage(gameWindows.getWidth(), 40, BufferedImage.TYPE_INT_RGB);
                 this.position.x = 0;
                 this.position.y = 0;
-                this.image = new BufferedImage(gameWindows.getWidth(), gameWindows.getHeight(), BufferedImage.TYPE_INT_RGB);
+                System.out.println("build up wall");
                 break;
             case DOWN:
                 this.position.x = 0;
                 this.position.y = gameWindows.getHeight();
-                this.image = new BufferedImage(gameWindows.getWidth(), gameWindows.getHeight(), BufferedImage.TYPE_INT_RGB);
+                this.image = new BufferedImage(gameWindows.getWidth(), 30, BufferedImage.TYPE_INT_RGB);
                 break;
             case LEFT:
                 try {

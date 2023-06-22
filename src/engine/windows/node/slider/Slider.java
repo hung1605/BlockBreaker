@@ -1,5 +1,6 @@
 package engine.windows.node.slider;
 
+import engine.windows.GameWindows;
 import engine.windows.common.Position;
 import engine.windows.node.Ball;
 import engine.windows.node.GameObject;
@@ -19,17 +20,19 @@ public class Slider extends GameObject {
     private boolean goLeftAble;
     private boolean goRightAble;
     int currentFrame;
-    public Slider(Position position, int speed, int moveRange){
-        super(position);
+    public Slider(GameWindows gameWindows, int speed){
+        super(new Position(0,0));
         this.speed = speed;
-        this.moveRange = moveRange;
-        this.goLeftAble = this.goRightAble = true;
+        this.moveRange = gameWindows.getWidth();
+        this.goLeftAble = true;
+        this.goRightAble = true;
         try {
-            this.image = ImageIO.read(new File("Resources/scroll-bar.png"));
+            this.image = ImageIO.read(new File("Resources/player.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        this.position.x = gameWindows.getWidth() / 2 - this.image.getWidth() / 2;
+        this.position.y = gameWindows.getHeight() * 5 / 6;
         keyListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {

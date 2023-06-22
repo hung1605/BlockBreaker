@@ -3,6 +3,8 @@ package engine.windows.node.scenes;
 import engine.windows.GameWindows;
 import engine.windows.common.Position;
 import engine.windows.node.*;
+import engine.windows.node.block.BlockType;
+import engine.windows.node.block.Block;
 import engine.windows.node.slider.Slider;
 
 import javax.imageio.ImageIO;
@@ -21,12 +23,12 @@ public class PlayScene extends Scene {
     public PlayScene(GameWindows gameWindows) {
         super(gameWindows);
         try {
-            background = new Background(ImageIO.read(new File("Resources/background.png")));
+            this.background = new Background(ImageIO.read(new File("Resources/background.png")));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.slider = new Slider(new Position(500, 600), 10, gameWindows.getWidth());
-        this.ball = new Ball(new Position(500, 500), 10);
+        this.slider = new Slider(gameWindows, 10);
+        this.ball = new Ball(new Position(gameWindows.getWidth()/2 - 14, slider.getPosition().y - 30), 7);
         this.health = new Health(3);
         this.listGameObject.addAll(health.getListLifePoint());
         this.listGameObject.add(this.slider);
@@ -36,7 +38,6 @@ public class PlayScene extends Scene {
         this.getKeyListenerList().add(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-
             }
 
             @Override
@@ -44,6 +45,10 @@ public class PlayScene extends Scene {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
                         ball.setIsMove(true);
+                        break;
+                    case KeyEvent.VK_ESCAPE:
+                        EscScene escScene = new EscScene(gameWindows);
+                        gameWindows.pushScene(escScene);
                         break;
                 }
             }
@@ -60,9 +65,22 @@ public class PlayScene extends Scene {
         this.listGameObject.add(new Wall(gameWindows, Wall.LEFT));// left wall
         this.listGameObject.add(new Wall(gameWindows, Wall.UP));// up wall
         Block blockPrototype = Block.prototype();
-        for (int i = 1; i <= 7; i++) {
-            for (int j = 1; j <= 10; j++) {
-                this.listGameObject.add(new Block(new Position(blockPrototype.getWidth() * j - 63, blockPrototype.getHeight() * i), i % 3 + 1));
+        int numberOfBlockHorizontal = (gameWindows.getWidth() - 200) / (blockPrototype.getWidth() + 20);
+        int numberOfBlockVertical = (gameWindows.getHeight() / 2) / (blockPrototype.getHeight() + 20);
+        Position leftCorner = new Position(150, 63);
+        // khoi tao block
+        for (int i = 1; i <= numberOfBlockVertical; i++) {
+            for (int j = 1; j <= numberOfBlockHorizontal; j++) {
+                if((i + j) % 7 == 0)
+                    this.listGameObject.add(new Block(new Position(
+                            blockPrototype.getWidth() * j + leftCorner.x,
+                            blockPrototype.getHeight() * i + leftCorner.y
+                    ), BlockType.STEEL_BLOCK, this));
+                else
+                    this.listGameObject.add(new Block(new Position(
+                            blockPrototype.getWidth() * j + leftCorner.x,
+                            blockPrototype.getHeight() * i + leftCorner.y)
+                            , BlockType.WOOD_BLOCK, this));
             }
         }
     }
@@ -77,24 +95,30 @@ public class PlayScene extends Scene {
                 || ball.getPosition().x >= gameWindows.getWidth()
                 || ball.getPosition().x <= 0
                 || ball.getPosition().y <= 0) {
-            if (health.getListLifePoint().size() == 1) {
+            System.out.println("bro u suck");
+            if (health.getListLifePoint().size() > 1) {
+                health.decreaseLifePoint();
+                this.ball.setReset();
+            } else {
                 ball.destroyGameObject();
                 OverScene overScene = new OverScene(gameWindows);
                 gameWindows.pushScene(overScene);
-            } else {
-                health.decreaseLifePoint();
-                this.ball.getPosition().x = 500;
-                this.ball.getPosition().y = 500;
-                this.ball.setIsMove(false);
-                this.ball.setResetAngle();
             }
         }
     }
-
+    public void checkWin() {
+        for (GameObject gameObject : listGameObject){
+            if(gameObject instanceof Block) return;
+        }
+        System.out.println("chuc mung nam moi");
+    }
     @Override
     public void update() {
-        super.update();
         checkCollide();
+        super.update();
+        checkWin();
         checkLose();
     }
+
+
 }

@@ -41,8 +41,7 @@ public class MenuScene extends Scene {
 
             @Override
             public void keyTyped(KeyEvent e) {
-                
-                throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
+
             }
 
             @Override
@@ -53,13 +52,11 @@ public class MenuScene extends Scene {
                         gameWindows.pushScene(escScene);
                         break;
                 }
-                throw new UnsupportedOperationException("Unimplemented method 'keyPressed'");
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
                 // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'keyReleased'");
             }
             
         });

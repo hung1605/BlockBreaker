@@ -1,39 +1,108 @@
 package engine.windows.node;
 
 import engine.windows.common.Position;
+import engine.windows.node.scenes.EscScene;
 import engine.windows.node.slider.Slider;
 
 import javax.imageio.ImageIO;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.io.File;
 
 public class Ball extends GameObject {
-    private int angle;
+    private float angle;
     private boolean ismove;
-    private int speed;
+    private float speed;
     private int resetFrame = 3;
     private int currentFrame;
-
+    private boolean collided;
     public static Ball prototype() {
-        return new Ball(new Position(0,0),0);
+        return new Ball(new Position(0, 0), 0f);
     }
-    public Ball(Position position, int speed) {
+
+    public Ball(Position position, float speed) {
         super(position);
         try {
             this.image = ImageIO.read(new File("Resources/ball.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.angle = Math.abs(new Random().nextInt() % 180);
+        this.angle = 91;
+//        this.angle = Math.abs(new Random().nextInt() % 90) + 45;
         this.ismove = false;
         this.speed = speed;
     }
 
-
     @Override
     public void collideWith(GameObject target) {
         bounce(target);
+    }
+
+    void calculateBallReflectAngle(GameObject gameObject) {
+//        this.collidable = false;
+        List<Position> points = new ArrayList<>();
+        points.add(gameObject.getPosition());
+        points.add(new Position(gameObject.getPosition().x + gameObject.getWidth(), gameObject.getPosition().y));
+        points.add(new Position(gameObject.getPosition().x + gameObject.getWidth(), gameObject.getPosition().y + gameObject.getHeight()));
+        points.add(new Position(gameObject.getPosition().x, gameObject.getPosition().y + gameObject.getHeight()));
+
+        Position center = new Position(this.position.x + this.getWidth() / 2, this.position.y + this.getHeight() / 2);
+
+        Position closestPoint = points.stream().min(
+                (a, b) -> (int) (
+                        a.distantSquare(center) - b.distantSquare(center)
+                )
+        ).get();
+        System.out.println("center y: " + center.y);
+        System.out.println("center y: " + center.x);
+        System.out.println("center b: " + (closestPoint.y - closestPoint.x));
+        switch (points.indexOf(closestPoint)) {
+            case 0:
+                System.out.println("TOP_LEFT");
+                if (center.y > center.x + (closestPoint.y - closestPoint.x)) {
+                    System.out.println("LEFT");
+                    angle = 180 - angle;
+                } else {
+                    System.out.println("UP");
+                    angle = -angle;
+                }
+                break;
+            case 1:
+                System.out.println("TOP_RIGHT");
+                if (center.y > -center.x + (closestPoint.y + closestPoint.x)) {
+                    System.out.println("RIGHT");
+                    angle = 180 - angle;
+                } else {
+                    System.out.println("UP");
+                    angle = -angle;
+                }
+                break;
+            case 2:
+                System.out.println("BTM_RIGHT");
+                if (center.y > center.x + (closestPoint.y - closestPoint.x)) {
+                    System.out.println("DOWN");
+                    angle = -angle;
+                } else {
+                    System.out.println("RIGHT");
+                    angle = 180 - angle;
+                }
+                break;
+            case 3:
+                System.out.println("BTM_LEFT");
+                if (center.y > -center.x + (closestPoint.y + closestPoint.x)) {
+                    System.out.println("DOWN");
+                    angle = -angle;
+                } else {
+                    System.out.println("LEFT");
+                    angle = 180 - angle;
+                }
+                break;
+        }
     }
 
     public void bounce(GameObject gameObject) {
@@ -43,85 +112,13 @@ public class Ball extends GameObject {
          * x,y,w,h gameObject
          */
         if (gameObject instanceof Slider) {
-            System.out.println("UP");
+            System.out.println("SLIDER");
             angle = 360 - angle;
             afterCollision(gameObject);
             return;
         }
-        if (angle >= 0 && angle <= 90) {
-            if (position.x + image.getWidth() >= gameObject.getPosition().x &&
-                    position.x + image.getWidth() <= gameObject.getPosition().x + speed) {
-                //LEFT
-                System.out.println("LEFT");
-                angle = 180 - angle;
-                afterCollision(gameObject);
-                return;
-            }
-
-            if (position.y >= gameObject.getPosition().y + gameObject.getHeight() - speed &&
-                    position.y <= gameObject.getPosition().y + gameObject.getHeight()) {
-                //DOWN
-                System.out.println("DOWN");
-                angle = 360 - angle;
-                afterCollision(gameObject);
-                return;
-            }
-        }
-        if (angle >= 90 && angle <= 180) {
-
-            if (position.x >= gameObject.getPosition().x + gameObject.getWidth() - speed &&
-                    position.x <= gameObject.getPosition().x + gameObject.getWidth()) {
-                //RIGHT
-                System.out.println("RIGHT");
-                angle = 180 - angle;
-                afterCollision(gameObject);
-                return;
-            }
-            if (position.y >= gameObject.getPosition().y + gameObject.getHeight() - speed &&
-                    position.y <= gameObject.getPosition().y + gameObject.getHeight()) {
-                //DOWN
-                System.out.println("DOWN");
-                angle = 360 - angle;
-                afterCollision(gameObject);
-                return;
-            }
-        }
-        if (angle >= 180 && angle <= 270) {
-            if (position.x >= gameObject.getPosition().x + gameObject.getWidth() - speed &&
-                    position.x <= gameObject.getPosition().x + gameObject.getWidth()) {
-                //RIGHT
-                System.out.println("RIGHT");
-                angle = 180 - angle;
-                afterCollision(gameObject);
-                return;
-            }
-            if (position.y + image.getHeight() >= gameObject.getPosition().y &&
-                    position.y + image.getHeight() <= gameObject.getPosition().y + speed) {
-                //UP
-                System.out.println("UP");
-                angle = 360 - angle;
-                afterCollision(gameObject);
-                return;
-            }
-        }
-        if (angle >= 270) {
-            if (position.x + image.getWidth() >= gameObject.getPosition().x &&
-                    position.x + image.getWidth() <= gameObject.getPosition().x + speed) {
-                //LEFT
-                System.out.println("LEFT");
-                angle = 180 - angle;
-                afterCollision(gameObject);
-                return;
-            }
-            if (position.y + image.getHeight() >= gameObject.getPosition().y &&
-                    position.y + image.getHeight() <= gameObject.getPosition().y + speed) {
-                //UP
-                System.out.println("UP");
-                angle = 360 - angle;
-                afterCollision(gameObject);
-                return;
-            }
-        }
+        calculateBallReflectAngle(gameObject);
+        afterCollision(gameObject);
     }
 
     private void afterCollision(GameObject gameObject) {
@@ -131,28 +128,28 @@ public class Ball extends GameObject {
             this.angle += slider.getGoLeft() * 10;
             this.angle -= slider.getGoRight() * 10;
         }
-        if (angle < 0) {
-            angle += 360;
-        }
-
-        if (angle >= 360) {
-            angle -= 360;
-        }
+        angle += angle < -180 ? 360 : angle > 180 ? -360 : 0;
     }
 
     public void setIsMove(boolean ismove) {
         this.ismove = ismove;
     }
 
-    public void setResetAngle() {
-        this.angle = 90;
+    public void setReset() {
+        this.setIsMove(false);
+        this.position.y = 420;
+        this.position.x = 466;
+        this.angle = Math.abs(new Random().nextInt() % 90) + 45;
+        ;
     }
 
     public void fly() {
-        this.position.x += speed * Math.cos(degToRad(angle));
-        this.position.y -= speed * Math.sin(degToRad(angle));
+        this.position.x += speed * Math.cos(Math.toRadians(angle));
+        this.position.y -= speed * Math.sin(Math.toRadians(angle));
     }
-
+    public void setAngle(int angle){
+        this.angle = angle;
+    }
     @Override
     public void update() {
         if (ismove) {
@@ -165,9 +162,5 @@ public class Ball extends GameObject {
                 this.collidable = true;
             }
         }
-    }
-
-    private float degToRad(int deg) {
-        return (float) (deg * Math.PI / 180);
     }
 }

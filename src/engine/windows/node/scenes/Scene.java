@@ -69,4 +69,8 @@ abstract public class Scene {
             }
         }
     }
+
+    public void addGameObject(GameObject gameObject) {
+        this.listGameObject.add(gameObject);
+    }
 }

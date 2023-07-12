@@ -23,12 +23,17 @@ public class Power extends GameObject {
     public void collideWith(GameObject target) {
         if(target instanceof Slider){
             TriggerPower();
+            this.destroyGameObject();
         }
     }
     public void TriggerPower(){
         iUpgrade.buff();
     }
     public void fall(){
-        this.position.y += 5;
+        this.position.y += 2.5;
+    }
+    @Override
+    public void update(){
+        fall();
     }
 }

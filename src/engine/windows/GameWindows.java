@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package engine.windows;
 
 
@@ -12,6 +7,9 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
+import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -19,8 +17,8 @@ import java.util.Stack;
  */
 public class GameWindows extends Frame implements Runnable {
 
-    private static final int UPDATE_PER_SECOND = 60;
-    Stack<Scene> sceneStack;
+    private static final int UPDATE_PER_SECOND = 480;
+    private Stack<Scene> sceneStack;
     private Image image;
     private Graphics second;
 
@@ -52,50 +50,39 @@ public class GameWindows extends Frame implements Runnable {
     private void drawBufferImage(Graphics g) {
         if (image == null) {
             image = createImage(this.getWidth(), this.getHeight());
-            //Tạo một 1 graphics ẩn
             second = image.getGraphics();
-            //Lấy graphics ẩn
         }
-        //Paint buffer image
         paint(second);
         g.drawImage(image, 0, 0, null);
     }
-    public void pushScene(Scene newScene){
-        if(!sceneStack.empty()){
-            Scene currentScene = sceneStack.peek();
-            for (KeyListener keyListener : currentScene.getKeyListenerList()){
-                this.removeKeyListener(keyListener);
-            }
-            for (MouseListener mouseListener : currentScene.getMouseListenerList()){
-                this.removeMouseListener(mouseListener);
-            }
-        }
-        for (KeyListener keyListener : newScene.getKeyListenerList()){
-            this.addKeyListener(keyListener);
-        }
-        for (MouseListener mouseListener : newScene.getMouseListenerList()){
-            this.addMouseListener(mouseListener);
-        }
+
+
+    public void pushScene(Scene newScene) {
         sceneStack.push(newScene);
+        refreshSceneListeners();
     }
-    public void popScene(){
-        if(!sceneStack.isEmpty()){
-            Scene currentScene = sceneStack.peek();
-            for (KeyListener keyListener : currentScene.getKeyListenerList()){
-                this.removeKeyListener(keyListener);
-            }
-            for (MouseListener mouseListener : currentScene.getMouseListenerList()){
-                this.removeMouseListener(mouseListener);
-            }
+
+    public void popScene() {
+        if (!sceneStack.isEmpty()) {
+            sceneStack.pop();
+            refreshSceneListeners();
         }
-        if(!sceneStack.isEmpty()) sceneStack.pop();
-        if(!sceneStack.isEmpty()){
-            Scene currentScene = sceneStack.peek();
-            for (KeyListener keyListener : currentScene.getKeyListenerList()){
-                this.addKeyListener(keyListener);
+    }
+
+    public void refreshSceneListeners() {
+        Scene currentScene = sceneStack.peek();
+        for (KeyListener keyListener : this.getKeyListeners()) {
+            this.removeKeyListener(keyListener);
+        }
+        for (MouseListener mouseListener : this.getMouseListeners()) {
+            this.removeMouseListener(mouseListener);
+        }
+        for (EventListener listener : currentScene.getEventListeners()) {
+            if (listener instanceof KeyListener) {
+                this.addKeyListener((KeyListener) listener);
             }
-            for (MouseListener mouseListener : currentScene.getMouseListenerList()){
-                this.addMouseListener(mouseListener);
+            if (listener instanceof MouseListener) {
+                this.addMouseListener((MouseListener) listener);
             }
         }
     }
@@ -106,6 +93,8 @@ public class GameWindows extends Frame implements Runnable {
             sceneStack.peek().draw(g);
         }
     }
+
+
     @Override
     public void run() {
         while (true) {

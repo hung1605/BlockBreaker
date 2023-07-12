@@ -17,7 +17,7 @@ public class Wall extends GameObject{
         super(new Position(0, 0));
         switch (side){
             case UP:
-                this.image = new BufferedImage(gameWindows.getWidth(), 40, BufferedImage.TYPE_INT_RGB);
+                this.image = new BufferedImage(gameWindows.getWidth(), 38, BufferedImage.TYPE_INT_RGB);
                 this.position.x = 0;
                 this.position.y = 0;
                 System.out.println("build up wall");

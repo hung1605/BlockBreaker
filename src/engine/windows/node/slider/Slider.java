@@ -20,8 +20,12 @@ public class Slider extends GameObject {
     private boolean goLeftAble;
     private boolean goRightAble;
     int currentFrame;
+    int currentTime;
+    boolean ballCollidable = true;
+
     public Slider(GameWindows gameWindows, int speed){
         super(new Position(0,0));
+        this.currentTime = 0;
         this.speed = speed;
         this.moveRange = gameWindows.getWidth();
         this.goLeftAble = true;
@@ -73,27 +77,51 @@ public class Slider extends GameObject {
     @Override
     public void collideWith(GameObject target) {
         if(target instanceof Ball) {
-            this.collidable = false;
+            this.ballCollidable = false;
         }
-
     }
-
-    @Override
-    public void update() {
-        if(0 < this.position.x && this.position.x + this.image.getWidth() < moveRange) goLeftAble = goRightAble = true;
-        if(!goRightAble) goRight = 0;
-        if(!goLeftAble) goLeft = 0;
-        if(this.position.x + this.image.getWidth() >= moveRange) goRightAble = false;
-        if(this.position.x <= 0) goLeftAble = false;
-        this.position.x += (goRight - goLeft) * speed;
-        if (!this.collidable) {
-            currentFrame++;
-            if (currentFrame == 10) {
-                currentFrame = 0;
-                this.collidable = true;
+    public void upgradeBar(int time){
+        this.currentTime = time;
+        try {
+            this.setImage(ImageIO.read(new File("Resources/scroll-bar.png")));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void decreaseUpgrade(){
+        this.currentTime--;
+        if(this.currentTime == 0){
+            try {
+                this.setImage(ImageIO.read(new File("Resources/player.png")));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
+    @Override
+    public void update() {
+        decreaseUpgrade();
+        if(0 < this.position.x && this.position.x + this.image.getWidth() < moveRange) goLeftAble = goRightAble = true;
+        if(!goRightAble) goRight = 0;
+        if(!goLeftAble) goLeft = 0;
+        if(this.position.x + this.image.getWidth() >= moveRange - 40) {
+            goRightAble = false;
+            goRight = 0;
+        }
+        if(this.position.x <= 40){
+            goLeftAble = false;
+            goLeft = 0;
+        }
+        this.position.x += (goRight - goLeft) * speed;
+        if (!this.ballCollidable) {
+            currentFrame++;
+            if (currentFrame == 10) {
+                currentFrame = 0;
+                this.ballCollidable = true;
+            }
+        }
+    }
+
 
     public KeyListener getKeyListener() {
         return keyListener;
@@ -106,4 +134,5 @@ public class Slider extends GameObject {
     public int getGoRight() {
         return goRight;
     }
+
 }

@@ -30,14 +30,14 @@ public class MenuScene extends Scene {
                 new ISimpleClickListener() {
                     @Override
                     public void onClick() {
-                        PlayScene playScene = new PlayScene(gameWindows);
-                        gameWindows.pushScene(playScene);
+                        PlayScene level1 = new PlayScene(gameWindows);
+                        gameWindows.pushScene(level1);
                     }
                 },
                 "Resources/start-button.png");
         this.listGameObject.add(startButton);
-        this.getMouseListenerList().add(startButton.getMouseListener());
-        this.getKeyListenerList().add(new KeyListener() {
+        this.eventListeners.add(startButton.getMouseListener());
+        this.eventListeners.add(new KeyListener() {
 
             @Override
             public void keyTyped(KeyEvent e) {

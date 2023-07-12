@@ -7,27 +7,26 @@ import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 abstract public class Scene {
     protected List<GameObject> listGameObject;
-    protected List<KeyListener> keyListenerList;
-    protected List<MouseListener> mouseListenerList;
+    protected List<EventListener> eventListeners;
     protected GameWindows gameWindows;
-
     private boolean initialized = false;
 
     public Scene(GameWindows gameWindows) {
         this.gameWindows = gameWindows;
         this.listGameObject = new ArrayList<>();
-        this.keyListenerList = new ArrayList<>();
-        this.mouseListenerList = new ArrayList<>();
+        this.eventListeners = new ArrayList<>();
     }
 
     private void initSceneInternal() {
         if (!initialized) {
             initialized = true;
             initScene();
+            gameWindows.refreshSceneListeners();
         }
     }
 
@@ -49,12 +48,8 @@ abstract public class Scene {
         listGameObject.removeAll(toBeRemoved);
     }
 
-    public List<KeyListener> getKeyListenerList() {
-        return keyListenerList;
-    }
-
-    public List<MouseListener> getMouseListenerList() {
-        return mouseListenerList;
+    public List<EventListener> getEventListeners() {
+        return eventListeners;
     }
 
     public void checkCollide() {

@@ -16,6 +16,9 @@ public abstract class GameObject {
     public GameObject(Position position) {
         this.position = position;
     }
+    public Position getCenter(){
+        return new Position(position.x + image.getWidth() /2, position.y + image.getHeight()/2);
+    }
 
     public void update() {
     }
@@ -36,6 +39,10 @@ public abstract class GameObject {
 
     public boolean isDestroy() {
         return isDestroyed;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
     public int getWidth(){

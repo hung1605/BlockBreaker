@@ -14,6 +14,9 @@ public class Position {
     public double distantSquare(Position b) {
         return Math.pow(b.x - this.x, 2) + Math.pow(b.y - this.y, 2);
     }
+    public double distant(Position b){
+        return Math.sqrt(distantSquare(b));
+    }
 
     @Override
     public Position clone() {

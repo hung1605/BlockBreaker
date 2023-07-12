@@ -21,7 +21,7 @@ public class EscScene extends Scene{
             System.out.println("image unfound");
             e.printStackTrace();
         }
-        this.keyListenerList.add(new KeyListener() {
+        this.eventListeners.add(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
